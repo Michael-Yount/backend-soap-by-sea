@@ -481,6 +481,50 @@ export interface PluginUploadFolder extends Schema.CollectionType {
   };
 }
 
+export interface PluginI18NLocale extends Schema.CollectionType {
+  collectionName: 'i18n_locale';
+  info: {
+    singularName: 'locale';
+    pluralName: 'locales';
+    collectionName: 'locales';
+    displayName: 'Locale';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetMinMax<{
+        min: 1;
+        max: 50;
+      }>;
+    code: Attribute.String & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUsersPermissionsPermission
   extends Schema.CollectionType {
   collectionName: 'up_permissions';
@@ -632,56 +676,13 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface PluginI18NLocale extends Schema.CollectionType {
-  collectionName: 'i18n_locale';
-  info: {
-    singularName: 'locale';
-    pluralName: 'locales';
-    collectionName: 'locales';
-    displayName: 'Locale';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.SetMinMax<{
-        min: 1;
-        max: 50;
-      }>;
-    code: Attribute.String & Attribute.Unique;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'plugin::i18n.locale',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'plugin::i18n.locale',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiSoapSoap extends Schema.CollectionType {
   collectionName: 'soaps';
   info: {
     singularName: 'soap';
     pluralName: 'soaps';
     displayName: 'soap';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -691,6 +692,11 @@ export interface ApiSoapSoap extends Schema.CollectionType {
     description: Attribute.RichText;
     price: Attribute.Integer;
     image: Attribute.Media;
+    soaptype: Attribute.Relation<
+      'api::soap.soap',
+      'manyToOne',
+      'api::soaptype.soaptype'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -701,12 +707,12 @@ export interface ApiSoapSoap extends Schema.CollectionType {
   };
 }
 
-export interface ApiSoapTypeSoapType extends Schema.CollectionType {
-  collectionName: 'soap_types';
+export interface ApiSoaptypeSoaptype extends Schema.CollectionType {
+  collectionName: 'soaptypes';
   info: {
-    singularName: 'soap-type';
-    pluralName: 'soap-types';
-    displayName: 'soap-type';
+    singularName: 'soaptype';
+    pluralName: 'soaptypes';
+    displayName: 'soaptype';
   };
   options: {
     draftAndPublish: true;
@@ -715,17 +721,22 @@ export interface ApiSoapTypeSoapType extends Schema.CollectionType {
     name: Attribute.String;
     description: Attribute.RichText;
     image: Attribute.Media;
+    soaps: Attribute.Relation<
+      'api::soaptype.soaptype',
+      'oneToMany',
+      'api::soap.soap'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::soap-type.soap-type',
+      'api::soaptype.soaptype',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::soap-type.soap-type',
+      'api::soaptype.soaptype',
       'oneToOne',
       'admin::user'
     > &
@@ -745,12 +756,12 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
+      'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'plugin::i18n.locale': PluginI18NLocale;
       'api::soap.soap': ApiSoapSoap;
-      'api::soap-type.soap-type': ApiSoapTypeSoapType;
+      'api::soaptype.soaptype': ApiSoaptypeSoaptype;
     }
   }
 }

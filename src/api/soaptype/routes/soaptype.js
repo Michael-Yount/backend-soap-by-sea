@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * soap-type router
+ * soaptype router
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::soap-type.soap-type');
+module.exports = createCoreRouter('api::soaptype.soaptype');

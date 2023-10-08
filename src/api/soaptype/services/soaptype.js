@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * soap-type service
+ * soaptype service
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::soap-type.soap-type');
+module.exports = createCoreService('api::soaptype.soaptype');

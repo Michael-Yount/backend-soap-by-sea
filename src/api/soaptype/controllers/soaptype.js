@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * soap-type controller
+ * soaptype controller
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::soap-type.soap-type');
+module.exports = createCoreController('api::soaptype.soaptype');
